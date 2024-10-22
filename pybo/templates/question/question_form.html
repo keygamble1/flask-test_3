@@ -1,0 +1,41 @@
+<!-- form에 만족하지않는이상 url 못만들게 제한해놓음 -->
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
+    <form  method="post" class="post-form my-3">
+        {{form.csrf_token}}
+        <!--form은 여러view에서 쓸수있게만들어야해서 왠만하면 action안씀-->
+        <!--오류표시-->
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for field,errors in form.errors.items() %}
+                <strong>{{form[field].label}}</strong>
+                <ul>
+                    {% for error in errors %}
+                    <li>{{error}}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+        <div class="mb-3">
+            <label for="subject">제목</label>
+            <input type="text" name="subject" id="subject" class="form-control"
+            value="{{form.subject.data or ''}}">
+            <!--input 밖에넣으면 네모박스에 넣어지는게아닌 바깥에됨 객체밖-->
+        </div>
+        <div class="mb-3">
+            <label for="content">내용</label>
+            <textarea name="content" id="content" class="form-control" rows="10">{{form.content.data or ''}}</textarea>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">저장하기</button>
+
+    </form>
+</div>
+
+{% endblock  %}
